@@ -1,35 +1,67 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, {useState} from 'react';
+import {createBrowserRouter, RouterProvider} from "react-router";
+import Home from "./components/Home.jsx";
+import About from "./components/About.jsx";
+import Dashboard from "./components/Dashboard.jsx";
+import Navbar from "./components/Navbar.jsx";
+import ParamComp from "./components/ParamComp.jsx";
+import Courses from "./components/Courses.jsx";
+import MockTest from "./components/MockTest.jsx";
+import NotFound from "./components/NotFound.jsx";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+ const router =   createBrowserRouter([
+        {
+            path: "/",
+            element:<div>
+                <Navbar/>
+                <Home/>
+            </div>
+        },
+        {
+          path: "/about",
+            element:<div>
+                <Navbar/>
+                <About/>
+            </div>
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+        },
+        {
+          path: "/dashboard",
+            element:<div>
+                <Navbar/>
+                <Dashboard/>
+            </div>,
+            children:[
+                {
+                    path:"course",
+                    element:<Courses/>
+                },
+                {
+                path:"mock-test",
+                    element:<MockTest/>
+                }
+            ]
 
-export default App
+        },
+     {
+         path:"/student/:id",
+         element:<div>
+             <Navbar/>
+             <ParamComp/>
+         </div>
+     },
+     {
+         path:"*",
+         element:<NotFound/>
+     }
+    ])
+    return (
+        <>
+     <RouterProvider router = {router}/>
+
+        </>
+    );
+};
+
+export default App;
